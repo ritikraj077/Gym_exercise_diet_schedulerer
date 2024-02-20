@@ -1,4 +1,6 @@
 from app import app
+
+from app import app
 from flask import Flask, render_template, redirect, request, session, jsonify
 from flask_session import Session
 import mysql.connector
@@ -23,12 +25,12 @@ def login_user():
         Password = request.form['Password']
         # if Username in user and user['username'] == Password:
         return user_login_db(Username,Password)
-    else :
-        return "Username and Password is Incorrect"
+    
+    
     
 @app.route("/logout")
 def logout():
-    session["name"] = None
+    session.pop('Username', None) 
     return redirect("/")
 
 # @app.route("/sign_up" , methods = ["POST"])
@@ -135,6 +137,56 @@ def weightgain():
 @app.route("/Weight_loss", methods = ["GET"])
 def weightloss():
     return weight_loss()
+
+
+##api to calculate the bmi index of a member 
+@app.route("/bmi", methods=["POST"])
+def bmi():
+    Weight = request.form["weight"]
+    Height = request.form["height"]
+    Bmi = cal_bmi(Weight, Height)  
+    if Bmi < 18.5:
+        return f" Bmi is : {str(Bmi)} you are Underweight"
+    elif Bmi >= 18.5 and Bmi < 25:
+        return f"Bmi is: {str(Bmi)} Normal weight"
+    elif Bmi >= 25 and Bmi < 30:
+        return f" Bmi is : {str(Bmi)} You are Overweight need to Workout"
+    else:
+        return f"Bmi is {str(Bmi)} you are Obese you should losse some weight"
+
+     #Height : {Height } and Weight :{Weight} is {str(Bmi)} " # Convert Bmi to string before returning
+
+def cal_bmi(Weight, Height):
+    # Convert height to meters
+    height_meters = float(Height) / 100
+    
+    # Convert weight to kilograms
+    weight_kg = float(Weight)
+    
+    # Calculate BMI
+    if height_meters > 0:
+        bmi = round((weight_kg / (height_meters ** 2)), 2)
+        return bmi
+    else:
+        return "Invalid height"
+
+    
+    
+# def cal_bmi(Height, Weight):
+#     # Convert height to meters
+#     height_meters = float(Height)/ 100
+    
+#     # Calculate BMI
+#     if height_meters > 0:
+#         bmi = round((Weight / (height_meters ** 2)), 2)
+#         return bmi
+#     else:
+#         return "Invalid height"
+
+
+
+    
+    
    
 
 

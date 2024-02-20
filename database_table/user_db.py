@@ -1,4 +1,6 @@
 import mysql.connector
+from flask import Flask, render_template, redirect, request, session, jsonify
+
 
 
 try:
@@ -22,8 +24,13 @@ def user_login_db(Username,Password):
     query = f"SELECT * FROM members_database  WHERE Username = '{Username}' and Password = '{Password}'"
     cursor.execute(query)
     output = cursor.fetchone()
-    name =  output["Name"]
-    return f"{name} Login  sucessfully"
+    if output:
+        session['Username'] = Username
+        name =  output["Name"]
+        return f"{name} Login  sucessfully"
+    else:
+          return "Username and Password is Incorrect"
+    
     
     
 
