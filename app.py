@@ -6,6 +6,8 @@ from flask_session import Session
 
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = "93168340169316834016"
+
 
 
 @app.route("/")
@@ -17,4 +19,4 @@ def Welcome_screeen():
     
     
 #from cantrol import router_user, member
-from cantrol import router_user, member
+from cantrol import router_user

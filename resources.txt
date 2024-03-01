@@ -1,0 +1,2 @@
+Password encryption = The BCrypt Algorithm is used to hash and salt passwords in a secure way. 
+open venv = ../../Scripts/activate

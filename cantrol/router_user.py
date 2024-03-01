@@ -3,52 +3,51 @@ from app import app
 from app import app
 from flask import Flask, render_template, redirect, request, session, jsonify
 from flask_session import Session
-import mysql.connector
 from database_table.user_db import user_login_db, user_delete_db, sign_up_db
 from database_table.execercise_shedule_db import workout_plan_db
 from database_table.Diet_plan_db import diet_plan_db, weight_gain, weight_loss
+from flask import jsonify
+from Services.token_login import generate_jwt_token
+from Services.features import cal_bmi
+import requests
 
 
+#api for login the user  after passing the username and password 
+from flask import request, jsonify
 
-
-
-
-
-
-
-
-@app.route("/login", methods=["POST", "GET"])
+@app.route("/login", methods=["POST"])
 def login_user():
     if request.method == "POST":
+        Username =  request.form["Username"]
+        Password = request.form["Password"].encode('utf-8')
         
-        Username = request.form['Username']
-        Password = request.form['Password']
-        # if Username in user and user['username'] == Password:
-        return user_login_db(Username,Password)
-    
-    
-    
+        result = user_login_db(Username, Password)
+        print(result)
+
+        
+            # Keys are present, proceed with login
+            #result = user_login_db(data)
+        if "successfully" in result:
+                # If login is successful, generate JWT token
+            token = generate_jwt_token(Username)
+            return jsonify({"token": token}), 200
+        else:
+            return jsonify({"error": "Invalid credentials"}), 401
+    else:
+            # Keys are missing in form data
+            return jsonify({"error": "Missing Username or Password"}), 400
+
+
+      
 @app.route("/logout")
 def logout():
     session.pop('Username', None) 
-    return redirect("/")
+    return redirect("/"), 200
 
-# @app.route("/sign_up" , methods = ["POST"])
-# def sign_up_user():
-    
-#     if "Name" not in  request.form or "Price" not in  request.form:
-#         return {"massage":"Plezz mention name and price"}, 400
-
-#         Id = request.form["Id"]
-#         Username = request.form['Username']
-#         Password = request.form['Password']
-        
 
     
-#         return user_signup_db(Id,Username,Password)
     
-    
-    
+ ##api for signup ne user   
 @app.route("/sign_up", methods=["POST"])
 def sign_up_user():
     if "Id" not in request.form or "Username" not in request.form or "Password" not in request.form:
@@ -144,54 +143,34 @@ def weightloss():
 def bmi():
     Weight = request.form["weight"]
     Height = request.form["height"]
-    Bmi = cal_bmi(Weight, Height)  
-    if Bmi < 18.5:
-        return f" Bmi is : {str(Bmi)} you are Underweight"
-    elif Bmi >= 18.5 and Bmi < 25:
-        return f"Bmi is: {str(Bmi)} Normal weight"
-    elif Bmi >= 25 and Bmi < 30:
-        return f" Bmi is : {str(Bmi)} You are Overweight need to Workout"
-    else:
-        return f"Bmi is {str(Bmi)} you are Obese you should losse some weight"
-
-     #Height : {Height } and Weight :{Weight} is {str(Bmi)} " # Convert Bmi to string before returning
-
-def cal_bmi(Weight, Height):
-    # Convert height to meters
-    height_meters = float(Height) / 100
+    return  cal_bmi(Weight, Height)  
     
-    # Convert weight to kilograms
-    weight_kg = float(Weight)
-    
-    # Calculate BMI
-    if height_meters > 0:
-        bmi = round((weight_kg / (height_meters ** 2)), 2)
-        return bmi
-    else:
-        return "Invalid height"
-
-    
-    
-# def cal_bmi(Height, Weight):
-#     # Convert height to meters
-#     height_meters = float(Height)/ 100
-    
-#     # Calculate BMI
-#     if height_meters > 0:
-#         bmi = round((Weight / (height_meters ** 2)), 2)
-#         return bmi
-#     else:
-#         return "Invalid height"
 
 
-
+@app.route("/get_data",methods =["GET"])
+def get_data():
+    response = requests.get("https://dummyjson.com/products")
+    print(response.status_code)
+    if response.status_code == 200:
+        data = response.json()
+        product = data["products"]
+        list = []
+        for i in product:
+            id = i["id"]
+            title = i["title"]
+            price = i["price"]
+            list.append([id,title,price])
+            
+             
+        print(list)
+        return jsonify(list), 200
+    return None
     
-    
-   
 
 
 
-    
+
+
    
 if __name__ == "__main__":
     app.run(debug=True)
