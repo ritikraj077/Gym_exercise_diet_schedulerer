@@ -1,4 +1,4 @@
-from app import app
+from Gym_exercise_diet_schedulerer.app import app
 from flask import request, jsonify
 from Exercise.services import workout_plan_db, verify_user_auth
 from Exercise.model import cal_bmi

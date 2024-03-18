@@ -1,4 +1,4 @@
-from app import app
+from Gym_exercise_diet_schedulerer.app import app
 from Trainer.services import trainer_table, data, get_all_trainers
 
 @app.route("/all_trainers", methods = ["GET"])

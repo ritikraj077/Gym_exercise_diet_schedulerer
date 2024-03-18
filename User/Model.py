@@ -1,7 +1,7 @@
 import bcrypt
 import datetime
 import jwt
-from app import app
+from Gym_exercise_diet_schedulerer.app import app
 from User.mobile_number_validation import isValid
 from pydantic import BaseModel
 

@@ -1,6 +1,6 @@
-from app import app
+from Gym_exercise_diet_schedulerer.app import app
 
-from app import app
+from Gym_exercise_diet_schedulerer.app import app
 from flask import Flask, render_template, redirect, request, session, jsonify
 from flask_session import Session
 from database_table.user_db import user_login_db, user_delete_db, sign_up_db

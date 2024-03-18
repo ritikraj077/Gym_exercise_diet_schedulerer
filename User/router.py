@@ -1,5 +1,5 @@
 from flask import Flask,request,jsonify,session,redirect
-from app import app
+from Gym_exercise_diet_schedulerer.app import app
 from Database.Connection import database_connection
 from User.Services import sign_up_db, user_login_db, user_delete_db , user_update_db, check_registration_user, forget_password_db
 from User import Model as user_models

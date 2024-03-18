@@ -1,5 +1,5 @@
 from flask import request, jsonify
-from app import app
+from Gym_exercise_diet_schedulerer.app import app
 from Diet.model import diet_plan_db
 from Exercise.services import  verify_user_auth
 from Authentication_jwt.authentication import check_bearer_token

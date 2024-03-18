@@ -1,6 +1,6 @@
 from flask import Flask 
 from flask import Flask,request,jsonify,session,redirect
-from app import app
+from Gym_exercise_diet_schedulerer.app import app
 import os
 
 

@@ -1,7 +1,7 @@
 from flask import request
 from jwt import decode as decode_token
 import jwt
-from app import app
+from Gym_exercise_diet_schedulerer.app import app
 #SECRET_KEY = 'Secret_key1234'
 
 
