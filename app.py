@@ -1,22 +1,19 @@
 from flask import Flask
-from flask import Flask, render_template, redirect, request, session
-from flask_session import Session
-
-
 
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = "93168340169316834016"
-
-
-
 @app.route("/")
-def Welcome_screeen():
-    # if not session.get("name"):
-    #     # if not there in the session then redirect to the login page
-    #     return redirect("/login")
-    return "Welcome to the Wellness fitness center "
+def Welcome_Screen():
     
-    
-#from cantrol import router_user, member
-from cantrol import router_user
+    return "This is the Welcome Screen"
+app.config['SECRET_KEY'] = 'Secret_key1234'
+
+
+from User import router
+from Diet import router
+from  Exercise import router
+from Trainer import trainer_route
+from upload_file import file_upload_router
+
+if __name__ == '__main__':
+    app.run(debug=True)
